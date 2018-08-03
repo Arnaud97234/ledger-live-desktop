@@ -29,4 +29,4 @@ describe('Application launch', ()=> {
 
 //    Dashboard
 const title_dashboard = await app.client.getText()
-  })
+})
