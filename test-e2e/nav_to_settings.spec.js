@@ -28,10 +28,6 @@ describe('Application launch', () => {
       expect(title).toEqual('Ledger Live')
       await app.client.waitUntilWindowLoaded()
       await app.client.pause(2000)
-      /*    await app.client.waitUntil(function(){
-      return app.client.getText('//*[@id="app"]/div/div/div/div[1]/div/div/div[3]/div[1]/div[1]/div[1]/div[1]') === 'Technical data *'
-    }, 2000, 'Test', 200)
-*/
 
       // Post Onboarding
       const title_onboarding = await app.client.getText('[data-e2e=onboarding_title]')
