@@ -7,7 +7,7 @@ const TIMEOUT = 50 * 1000
 describe('Application launch', ()=> {
   beforeEach(async () => {
     app = new Application({
-      path: './dist/ledger-live-desktop-1.1.0-linux-x86_64.AppImage',
+      path: './dist/ledger-live-desktop-1.1.1-linux-x86_64.AppImage',
       env: {
         SKIP_ONBOARDING:'1'
       }
@@ -28,5 +28,6 @@ describe('Application launch', ()=> {
     await app.client.pause(2000)
 
 //    Dashboard
-const title_dashboard = await app.client.getText()
+const accountList = await app.client.getHTML('[data-e2e=dashboard_AccountList]', false)
+  })
 })
