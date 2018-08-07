@@ -1,4 +1,6 @@
-const Application = require('spectron').Application
+import { Application } from 'spectron'
+
+import { delay } from 'helpers/promise'
 
 let app
 
@@ -7,7 +9,7 @@ const TIMEOUT = 50 * 1000
 describe('Application launch', () => {
   beforeEach(async () => {
     app = new Application({
-      path: './dist/ledger-live-desktop-1.1.1-linux-x86_64.AppImage',
+      path: './dist/ledger-live-desktop-1.1.0-linux-x86_64.AppImage',
       env: {
         SKIP_ONBOARDING: '1',
       },
@@ -27,48 +29,70 @@ describe('Application launch', () => {
       const title = await app.client.getTitle()
       expect(title).toEqual('Ledger Live')
       await app.client.waitUntilWindowLoaded()
-//      await app.client.pause(2000)
+      await waitForDisappear(app, '#preload')
 
       // Post Onboarding
-      // expect(title_onboarding).toEqual('Analytics and bug reports')
-      const title_onboarding = await app.client.getText('[data-e2e=onboarding_title]')
-      waitForExpectedElement(title_onboarding, 'Analytics and bug reports')
-      await app.client.click('[data-e2e=continue_button]')
-      await app.client.pause(1000)
+      await waitForExpectedText(app, '[data-e2e=onboarding_title]', 'Analytics and bug reports')
 
-      const title_finish = await app.client.getText('[data-e2e=finish_title]')
-      expect(title_finish).toEqual('Your device is ready!')
       await app.client.click('[data-e2e=continue_button]')
-      await app.client.pause(1000)
 
-      const title_disclaimer = await app.client.getText('[data-e2e=disclaimer_title]')
-      expect(title_disclaimer).toEqual('Trade safely')
+      await waitForExpectedText(app, '[data-e2e=finish_title]', 'Your device is ready!')
       await app.client.click('[data-e2e=continue_button]')
-      await app.client.pause(1000)
+
+      await waitForExpectedText(app, '[data-e2e=disclaimer_title]', 'Trade safely')
+      await app.client.click('[data-e2e=continue_button]')
 
       // Dashboard EmptyState
-      const title_dashboard_empty = await app.client.getText('[data-e2e=dashboard_empty_title]')
-      expect(title_dashboard_empty).toEqual('Add accounts to your portfolio')
+      await waitForExpectedText(
+        app,
+        '[data-e2e=dashboard_empty_title]',
+        'Add accounts to your portfolio',
+      )
 
       // Open Settings
       await app.client.click('[data-e2e=setting_button]')
-      await app.client.pause(1000)
-      const title_settings = await app.client.getText('[data-e2e=settings_title]')
-      expect(title_settings).toEqual('Settings')
+      await waitForExpectedText(app, '[data-e2e=settings_title]', 'Settings')
 
       // DevMode ON
       await app.client.click('[data-e2e=devMode_button]')
-      await app.client.pause(500)
     },
     TIMEOUT,
   )
 })
 
-
-
-function waitForExpectedElement(element, expected) {
-  let done = expect(element).toEqual(expected)
-  while (!done) {
-    done = expect(element).toEqual(expected)
+function waitForExpectedText(app, selector, expected, maxRetry = 5) {
+  async function check() {
+    if (!maxRetry) {
+      throw new Error(`Cant find the element ${selector} in the page`)
+    }
+    try {
+      const str = await app.client.getText(selector)
+      if (str === expected) {
+        return true
+      }
+    } catch (err) {} // eslint-disable-line
+    await delay(500)
+    --maxRetry
+    return check()
   }
+  return check()
+}
+
+function waitForDisappear(app, selector, maxRetry = 5) {
+  async function check() {
+    if (!maxRetry) {
+      throw new Error('Too many retries for waiting element to disappear')
+    }
+    try {
+      await app.client.getText(selector)
+    } catch (err) {
+      if (err.message.startsWith('An element could not be located')) {
+        return true
+      }
+    }
+    await delay(500)
+    --maxRetry
+    return check()
+  }
+  return check()
 }
