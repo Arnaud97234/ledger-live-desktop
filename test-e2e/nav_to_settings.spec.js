@@ -7,7 +7,7 @@ const TIMEOUT = 50 * 1000
 describe('Application launch', () => {
   beforeEach(async () => {
     app = new Application({
-      path: './dist/ledger-live-desktop-1.1.0-linux-x86_64.AppImage',
+      path: './dist/ledger-live-desktop-1.1.1-linux-x86_64.AppImage',
       env: {
         SKIP_ONBOARDING: '1',
       },
@@ -27,11 +27,12 @@ describe('Application launch', () => {
       const title = await app.client.getTitle()
       expect(title).toEqual('Ledger Live')
       await app.client.waitUntilWindowLoaded()
-      await app.client.pause(2000)
+//      await app.client.pause(2000)
 
       // Post Onboarding
+      // expect(title_onboarding).toEqual('Analytics and bug reports')
       const title_onboarding = await app.client.getText('[data-e2e=onboarding_title]')
-      expect(title_onboarding).toEqual('Analytics and bug reports')
+      waitForExpectedElement(title_onboarding, 'Analytics and bug reports')
       await app.client.click('[data-e2e=continue_button]')
       await app.client.pause(1000)
 
@@ -62,3 +63,12 @@ describe('Application launch', () => {
     TIMEOUT,
   )
 })
+
+
+
+function waitForExpectedElement(element, expected) {
+  let done = expect(element).toEqual(expected)
+  while (!done) {
+    done = expect(element).toEqual(expected)
+  }
+}
