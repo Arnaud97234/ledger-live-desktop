@@ -65,3 +65,5 @@ runJob \
   "app built, packaged and published successfully" \
   "failed to build app" \
   "verbose"
+
+runJob "$EP_DRAFT=false && $EP_PRE_RELEASE=true
