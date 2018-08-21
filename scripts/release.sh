@@ -26,36 +26,36 @@ source scripts/helpers/display-env.sh
    exit 1
  fi
 
-  if [ ! -d "static/fonts/museosans" ]; then
-    if ! command -v aws ; then
-      if [[ $(uname) == 'Darwin' ]]; then echo 'you are on MacOS' && runJob "brew install awscli" "installing aws cli..." "installed aws cli" "failed to install aws cli"
-    elif [[ $(uname) == 'Linux' ]]; then echo 'you are on Linux' && runJob "sudo apt install awscli" "installing aws cli..." "installed aws cli" "failed to install aws cli"
-      fi
-    fi
+  #if [ ! -d "static/fonts/museosans" ]; then
+  #  if ! command -v aws ; then
+  #    if [[ $(uname) == 'Darwin' ]]; then echo 'you are on MacOS' && runJob "brew install awscli" "installing aws cli..." "installed aws cli" "failed to install aws cli"
+  #  elif [[ $(uname) == 'Linux' ]]; then echo 'you are on Linux' && runJob "sudo apt install awscli" "installing aws cli..." "installed aws cli" "failed to install aws cli"
+  #    fi
+  #  fi
 
-    runJob \
-      "set -e ;\
-      rm -rf /tmp/museosans* ;\
-      aws s3 cp s3://ledger-ledgerlive-resources-dev/resources/museosans.zip /tmp/museosans.zip ;\
-      unzip /tmp/museosans.zip -d /tmp/museosans ;\
-      mv /tmp/museosans/museosans static/fonts ;\
-      rm static/fonts/museosans/.DS_Store # remove crappy macOS file ;\
-      rm -rf /tmp/museosans*" \
-      "no museosans font. fetching it from private bucket..." \
-      "successfully fetched museosans" \
-      "error fetching museosans"
-  fi
+#    runJob \
+#      "set -e ;\
+#      rm -rf /tmp/museosans* ;\
+#      aws s3 cp s3://ledger-ledgerlive-resources-dev/resources/museosans.zip /tmp/museosans.zip ;\
+#      unzip /tmp/museosans.zip -d /tmp/museosans ;\
+#      mv /tmp/museosans/museosans static/fonts ;\
+#      rm static/fonts/museosans/.DS_Store # remove crappy macOS file ;\
+#      rm -rf /tmp/museosans*" \
+#      "no museosans font. fetching it from private bucket..." \
+#      "successfully fetched museosans" \
+#      "error fetching museosans"
+#  fi
 
 # if ! git diff-index --quiet HEAD --; then
 #   echo "you have uncommitted local changes!" >&2
 #   exit 1
 # fi
 
- originRemote=$(git config --get remote.origin.url)
- if [ "$originRemote" != "git@github.com:LedgerHQ/ledger-live-desktop.git" ]; then
-   echo "the origin remote is incorrect ($originRemote)"
-   exit 1
- fi
+# originRemote=$(git config --get remote.origin.url)
+# if [ "$originRemote" != "git@github.com:LedgerHQ/ledger-live-desktop.git" ]; then
+#   echo "the origin remote is incorrect ($originRemote)"
+#   exit 1
+# fi
 
 runJob "yarn compile" "compiling..." "compiled" "failed to compile" "verbose"
 
