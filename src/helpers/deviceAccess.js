@@ -1,10 +1,20 @@
 // @flow
 import logger from 'logger'
 import throttle from 'lodash/throttle'
+import noop from 'lodash/noop'
 import type Transport from '@ledgerhq/hw-transport'
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid'
 import { DisconnectedDevice, CantOpenDevice } from 'config/errors'
 import { retry } from './promise'
+
+let TransportNodeHid
+if (process.env.NODE_ENV === 'test') {
+  TransportNodeHid = {
+    setListenDevicesPollingSkip: noop,
+    open: noop,
+  }
+} else {
+  TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default
+}
 
 // all open to device must use openDevice so we can prevent race conditions
 // and guarantee we do one device access at a time. It also will handle the .close()

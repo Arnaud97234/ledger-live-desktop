@@ -185,7 +185,7 @@ const getPoolInstance = () => {
   if (!walletPoolInstance) {
     instanciateWalletPool({
       // sqlite files will be located in the app local data folder
-      dbPath: process.env.LEDGER_LIVE_SQLITE_PATH,
+      dbPath: global.LEDGER_LIVE_SQLITE_PATH || process.env.LEDGER_LIVE_SQLITE_PATH,
     })
   }
   invariant(walletPoolInstance, "can't initialize walletPoolInstance")

@@ -10,15 +10,14 @@ type Input = {
   currencyId: string,
 }
 
-const cmd: Command<Input, boolean> = createCommand(
-  'libcoreValidAddress',
-  ({ currencyId, address }) =>
-    fromPromise(
-      withLibcore(async core => {
-        const currency = await core.getPoolInstance().getCurrency(currencyId)
-        return isValidAddress(core, currency, address)
-      }),
-    ),
+export const libcoreValidAddress = ({ currencyId, address }: Input) =>
+  withLibcore(async core => {
+    const currency = await core.getPoolInstance().getCurrency(currencyId)
+    return isValidAddress(core, currency, address)
+  })
+
+const cmd: Command<Input, boolean> = createCommand('libcoreValidAddress', input =>
+  fromPromise(libcoreValidAddress(input)),
 )
 
 export default cmd
