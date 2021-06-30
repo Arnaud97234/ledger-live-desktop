@@ -114,6 +114,11 @@ export default class Page {
     await btn.click();
   }
 
+  async goToSendFlow() {
+    const btn = await this.drawerSendButton();
+    await btn.click();
+  }
+
   async synchronize() {
     const btn = await this.topbarSynchronizeButton();
     await btn.click();

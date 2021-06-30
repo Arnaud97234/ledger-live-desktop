@@ -1,5 +1,6 @@
 import initialize from "../../common.js";
 import addAccount from "../../flows/accounts/addAccount";
+import sendFunds from "../../flows/accounts/send";
 import { accountsFlows } from "./flows.js";
 
 describe("bitcoin family", () => {
@@ -9,4 +10,5 @@ describe("bitcoin family", () => {
 
   addAccount("bitcoin");
   accountsFlows("bitcoin");
+  sendFunds("bitcoin");
 });

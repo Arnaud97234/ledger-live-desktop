@@ -49,6 +49,7 @@ const StepRecipient = ({
           autoFocus={!openedFromAccount}
           onChange={onChangeAccount}
           value={account}
+          id="send-currency-input"
         />
       </Box>
       <StepRecipientSeparator />

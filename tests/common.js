@@ -19,6 +19,7 @@ import AccountSettingsModal from "./po/accountSettingsModal.page";
 import ExportOperationsModal from "./po/exportOperationsHistoryModal.page";
 import ExportAccountsModal from "./po/exportAccountsModal.page";
 import ReceiveModal from "./po/receiveModal.page.js";
+import SendModal from "./po/sendModal.page.js";
 import HideTokenModal from "./po/hideTokenModal.page";
 import WalletConnectPasteLinkModal from "./po/WalletConnectPasteLinkModal.page";
 import fs from "fs";
@@ -94,6 +95,7 @@ let accountSettingsModal;
 let exportOperationsHistoryModal;
 let exportAccountsModal;
 let receiveModal;
+let sendModal;
 let hideTokenModal;
 let walletConnectPasteLinkModal;
 let mockDeviceEvent;
@@ -190,6 +192,7 @@ export default function initialize(name, { userData, env = {}, disableStartSnap 
     exportOperationsHistoryModal = new ExportOperationsModal(app);
     exportAccountsModal = new ExportAccountsModal(app);
     receiveModal = new ReceiveModal(app);
+    sendModal = new SendModal(app);
     hideTokenModal = new HideTokenModal(app);
     walletConnectPasteLinkModal = new WalletConnectPasteLinkModal(app);
     mockDeviceEvent = getMockDeviceEvent(app);
@@ -300,5 +303,6 @@ export {
   exportOperationsHistoryModal,
   exportAccountsModal,
   receiveModal,
+  sendModal,
   userDataPath,
 };
