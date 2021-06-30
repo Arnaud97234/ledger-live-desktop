@@ -200,7 +200,13 @@ export function SideDrawer({
     >
       {state => (
         <DrawerContainer className="sidedrawer" state={state} ref={focusTrapElem} tabIndex="-1">
-          <DrawerContent {...props} isOpened={isOpen} state={state} direction={direction}>
+          <DrawerContent
+            {...props}
+            isOpened={isOpen}
+            state={state}
+            direction={direction}
+            id="notification-drawer"
+          >
             {onRequestClose || onRequestBack ? (
               <Box
                 horizontal
@@ -221,7 +227,11 @@ export function SideDrawer({
                 )}
                 <Box flex="1" />
                 {onRequestClose && (
-                  <TouchButton onClick={onRequestClose} className="sidedrawer-close">
+                  <TouchButton
+                    onClick={onRequestClose}
+                    className="sidedrawer-close"
+                    id="close-notifications-button"
+                  >
                     <IconCross size={16} />
                   </TouchButton>
                 )}

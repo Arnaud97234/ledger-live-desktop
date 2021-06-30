@@ -121,6 +121,7 @@ export function Toast({
         onDismiss(id);
         event.stopPropagation();
       }}
+      id="portfolio-new-announcement"
     >
       <Content>
         <IconContainer color={defaultIconColor}>
