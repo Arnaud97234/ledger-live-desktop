@@ -1,18 +1,15 @@
-import initialize, {
-  app,
-  notificationsHub,
-  portfolioPage,
-  announcementsApiMock,
-  serviceStatusApiMock,
-} from "../common.js";
+import initialize, { app, notificationsHub, portfolioPage } from "../common.js";
 import addAccount from "../flows/accounts/addAccount";
 
 describe("Notification center", () => {
   initialize("notification center", {
-    userData: "onboardingcompletedAnnouncements",
+    userData: "onboardingcompleted",
   });
 
   describe("When LL empty state", () => {
+    beforeAll(async () => {
+      await notificationsHub.addAnnouncement();
+    });
     afterAll(async () => {
       const closeBtn = await notificationsHub.closeButton();
       await closeBtn.click();
@@ -52,7 +49,7 @@ describe("Notification center", () => {
     });
 
     it("new snackbar element should be displayed", async () => {
-      await announcementsApiMock();
+      await notificationsHub.generateAnnouncement();
       const announcementContainer = await portfolioPage.announcementsToast();
       await announcementContainer.waitForDisplayed();
       expect(await app.client.screenshot()).toMatchImageSnapshot({
@@ -75,7 +72,7 @@ describe("Notification center", () => {
     const warningBtn = notificationsHub.statusWarningButton();
 
     it("Warning icon should be present in the topBar", async () => {
-      await serviceStatusApiMock();
+      await notificationsHub.toggleIncident();
       await warningBtn.waitForDisplayed();
       expect(await app.client.screenshot()).toMatchImageSnapshot({
         customSnapShotIdentifier: `notification-center-new-incident-1`,
