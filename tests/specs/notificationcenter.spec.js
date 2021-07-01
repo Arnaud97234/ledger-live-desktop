@@ -5,9 +5,6 @@ describe("Notification center", () => {
   initialize("notification center", {
     userData: "onboardingcompletedAnnouncements",
   });
-  //  beforeAll(async () => {
-  //    await notificationsHub.addAnnouncement();
-  //  });
 
   describe("When LL empty state", () => {
     afterAll(async () => {
@@ -16,6 +13,7 @@ describe("Notification center", () => {
     });
 
     it("general annoucements should be displayed", async () => {
+      await notificationsHub.addAnnouncement();
       await notificationsHub.openNotificationsHub();
       await app.client.pause(500);
       expect(await app.client.screenshot()).toMatchImageSnapshot({
