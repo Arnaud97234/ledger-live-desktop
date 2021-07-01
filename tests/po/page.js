@@ -138,7 +138,6 @@ export default class Page {
   // Notifications
   async addAnnouncement() {
     announcementsApiMock("addAnnouncementFromPool");
-    await this.synchronize();
   }
 
   async generateAnnouncement(params) {

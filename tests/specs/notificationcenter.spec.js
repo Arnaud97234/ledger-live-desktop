@@ -3,17 +3,18 @@ import addAccount from "../flows/accounts/addAccount";
 
 describe("Notification center", () => {
   initialize("notification center", {
-    userData: "onboardingcompleted",
+    userData: "onboardingcompletedAnnouncements",
   });
+  //  beforeAll(async () => {
+  //    await notificationsHub.addAnnouncement();
+  //  });
 
   describe("When LL empty state", () => {
-    beforeAll(async () => {
-      await notificationsHub.addAnnouncement();
-    });
     afterAll(async () => {
       const closeBtn = await notificationsHub.closeButton();
       await closeBtn.click();
     });
+
     it("general annoucements should be displayed", async () => {
       await notificationsHub.openNotificationsHub();
       await app.client.pause(500);
@@ -34,6 +35,7 @@ describe("Notification center", () => {
   describe("When user add accounts", () => {
     addAccount("bitcoin");
     it("specific announcement should be displayed", async () => {
+      await portfolioPage.goToPortfolio();
       const notificationsBadge = await notificationsHub.notificationsBadge();
       await notificationsBadge.waitForDisplayed({ timeout: 60000 });
       await notificationsHub.openNotificationsHub();
@@ -42,6 +44,7 @@ describe("Notification center", () => {
       });
     });
   });
+
   describe("When new announcement is pushed", () => {
     afterAll(async () => {
       const closeBtn = await notificationsHub.closeButton();
